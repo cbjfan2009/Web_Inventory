@@ -19,7 +19,12 @@ app = Flask(__name__)
 
 @app.route("/", methods=['POST', 'GET'])
 def main():
-    return render_template('main.html')
+    with _sqlite3.connect('Inventory.db') as con:
+        cur = con.cursor()
+        cur.execute('Select * FROM WEB_INVENTORY')
+        data = cur.fetchall()
+        print(data)
+        return render_template('main.html', data=data)
 
 
 

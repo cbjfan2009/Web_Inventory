@@ -3,11 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Simple Inventory</title>
+    <style>
+        table {border: 1px solid black; padding: 5px; width: 100px;}
+    </style>
 </head>
 {% block body %}
 
 <div>
     <H1>Hello, Inventory User</H1>
+    <table>
+        <thead>
+            <tr>Item Number</tr>
+            <tr>Description</tr>
+            <tr>Weight</tr>
+            <tr>Length</tr>
+            <tr>Width</tr>
+            <tr>Height</tr>
+            <tr>Inventory Count</tr>
+        </thead>
+
+        <tbody>
+        {% for row in data %}
+            <tr>
+                <td>{{ row }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endfor %}
 </div>
 
 {% endblock %}
