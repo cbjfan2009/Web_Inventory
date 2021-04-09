@@ -45,17 +45,23 @@ def main():
 #add_inventory(987654321, 9001203)
 #print("------------------------NEW QUERY------------------")
 
-#querytest = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
+querytest = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
 #for row in query:
 #    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
 
-#a = (querytest.fetchall())
-#print(a)
-#print("--------------------------")
-#for index, tuple in enumerate(a):
- #   element_one = tuple[0]
-  #  element_two = tuple[1]
-   # element_three = tuple[2]
+a = (querytest.fetchall())
+for i in a: #gets individual 'cells'
+    for sub in i:
+        print(sub)
+#print(a) #prints the list of tuples
+
+
+#for index, tuple in enumerate(a): #gets individual 'cells'
+#    for i in tuple:
+#        print(i)
+    #element_one = tuple[0]
+    #element_two = tuple[1]
+    #element_three = tuple[2]
     #element_four = tuple[3]
     #element_five = tuple[4]
     #element_six = tuple[5]
