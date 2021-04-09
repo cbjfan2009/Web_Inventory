@@ -23,7 +23,15 @@ def main():
         cur = con.cursor()
         cur.execute('Select * FROM WEB_INVENTORY')
         data = cur.fetchall()
-        print(data)
+        #for index, tuple in enumerate(data):
+        #    element_one = tuple[0]
+        #    element_two = tuple[1]
+        #    element_three = tuple[2]
+        #    element_four = tuple[3]
+        #    element_five = tuple[4]
+        #    element_six = tuple[5]
+        #    element_seven = tuple[6]
+        #    print(element_one, element_two, element_three, element_four, element_five, element_six, element_seven)
         return render_template('main.html', data=data)
 
 
@@ -37,6 +45,19 @@ def main():
 #add_inventory(987654321, 9001203)
 #print("------------------------NEW QUERY------------------")
 
-#query = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
+#querytest = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
 #for row in query:
 #    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
+
+#a = (querytest.fetchall())
+#print(a)
+#print("--------------------------")
+#for index, tuple in enumerate(a):
+ #   element_one = tuple[0]
+  #  element_two = tuple[1]
+   # element_three = tuple[2]
+    #element_four = tuple[3]
+    #element_five = tuple[4]
+    #element_six = tuple[5]
+    #element_seven = tuple[6]
+    #print(element_one, element_two, element_three, element_four, element_five, element_six, element_seven)
