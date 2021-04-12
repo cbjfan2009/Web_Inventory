@@ -13,9 +13,9 @@ def add_inventory(item_count, item_num):
     conn.commit()
 
 
-
-#flask routes setup
+# flask routes setup
 app = Flask(__name__)
+
 
 @app.route("/", methods=['POST', 'GET'])
 def main():
@@ -32,8 +32,8 @@ def main():
         #    element_six = tuple[5]
         #    element_seven = tuple[6]
         #    print(element_one, element_two, element_three, element_four, element_five, element_six, element_seven)
-        return render_template('main.html', data=data)
-
+        # https://stackoverflow.com/a/27036691 good explanation as to why it didn't work
+        return render_template('main.html', data=enumerate(data))
 
 
 #query = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
