@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 import _sqlite3
 
 #connection to DB
@@ -8,10 +8,17 @@ conn = _sqlite3.connect('Inventory.db')
 cursor = conn.cursor()
 
 def add_inventory(item_count, item_num):
-    update_string = str("Update WEB_INVENTORY SET InventoryCount =" + str(item_count)+ " WHERE ITEMNUM = " + str(item_num))
+    update_string = str(
+    "Update WEB_INVENTORY SET InventoryCount =" + str(item_count)+
+    " WHERE ITEMNUM = " + str(item_num))
     cursor.execute(update_string)
     conn.commit()
 
+def add_item(new_item): #Item-Number, Description, Weight, Package-Length,  Package-Width, Package-Height, Inventory-Count
+    cursor.execute(
+    '''INSERT INTO WEB_INVENTORY(ItemNum,Description,Weight,PkgL,PkgW,PkgH,InventoryCount) 
+    VALUES(?, ?, ?, ?, ?, ?)''', new_item)
+    conn.commit()
 
 # flask routes setup
 app = Flask(__name__)
