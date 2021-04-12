@@ -23,17 +23,7 @@ def main():
         cur = con.cursor()
         cur.execute('Select * FROM WEB_INVENTORY')
         data = cur.fetchall()
-        #for index, tuple in enumerate(data):
-        #    element_one = tuple[0]
-        #    element_two = tuple[1]
-        #    element_three = tuple[2]
-        #    element_four = tuple[3]
-        #    element_five = tuple[4]
-        #    element_six = tuple[5]
-        #    element_seven = tuple[6]
-        #    print(element_one, element_two, element_three, element_four, element_five, element_six, element_seven)
-        # https://stackoverflow.com/a/27036691 good explanation as to why it didn't work
-        return render_template('main.html', data=enumerate(data))
+        return render_template('main.html', data=data) #=enumerate(data)
 
 
 #query = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
@@ -45,14 +35,14 @@ def main():
 #add_inventory(987654321, 9001203)
 #print("------------------------NEW QUERY------------------")
 
-querytest = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
+#querytest = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
 #for row in query:
 #    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
 
-a = (querytest.fetchall())
-for i in a: #gets individual 'cells'
-    for sub in i:
-        print(sub)
+#a = (querytest.fetchall())
+#for i in a: #gets individual 'cells'
+#    for sub in i:
+#        print(sub)
 #print(a) #prints the list of tuples
 
 
