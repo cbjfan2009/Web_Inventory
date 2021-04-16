@@ -5,20 +5,28 @@
     <title>Simple Inventory</title>
     <style>
         #inventory_table {border: 1px solid black; padding: 5px; width: 100%;}
-        th {font-size:20px}
+
+        th {font-size:20px;
+        font-family: Arial, Verdana;}
+
         tr:nth-child(even) {background-color: lightgrey;}
-        tr {text-align: center;}
+
+        tr {text-align: center;
+        font-family: Arial, Verdana;}
+
         .button {
         border: solid black 1px;
         color: black;
+        background-color: lightgrey;
         padding: 15px 32px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
+        font-family: Arial, Verdana;
         font-size: 16px;
+        font-weight: bold;
         margin: 4px 2px;
-        cursor: pointer;
-        }
+        cursor: pointer;}
     </style>
 </head>
 {% block body %}
@@ -26,10 +34,10 @@
 <div>
     <h1>Hello, Inventory User</h1>
 
-    <button class="button" type="button">Add Inventory Item</button>
-    <button class="button" type="button">Delete Inventory Item</button>
-    <button class="button" type="button">Update Inventory Count</button>
-    <button class="button" type="button">Update Item Specifications</button>
+    <a class="button" type="button" href="{{ url_for('add_inventory') }}">Add New Inventory Item</a>
+    <a class="button" type="button" href="{{ url_for('delete_inventory') }}">Delete Inventory Item</a>
+    <a class="button" type="button" href="{{ url_for('update_inventory') }}">Update Inventory Count</a>
+    <a class="button" type="button" href="{{ url_for('update_specifications') }}">Update Item Specifications</a>
 
 
     <table id="inventory_table">
