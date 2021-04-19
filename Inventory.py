@@ -1,8 +1,8 @@
 from flask import Flask, render_template, url_for, request
-import _sqlite3
+import sqlite3
 
 #connection to DB
-conn = _sqlite3.connect('Inventory.db')
+conn = sqlite3.connect('Inventory.db')
 
 #setup cursor object
 cursor = conn.cursor()
@@ -14,11 +14,12 @@ def add_inventory_count(item_count, item_num):
     cursor.execute(update_string)
     conn.commit()
 
-def add_item(itemNumber,prodDescrip,weight,length, width, height,count): #Item-Number, Description, Weight, Package-Length,  Package-Width, Package-Height, Inventory-Count
-    item_values = (itemNumber, prodDescrip, weight, length, width, height, count)
-    #sql_text = "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (" + itemNumber + ", " + prodDescrip + ", " + weight + ", " + length + ", " + width + ", " + height + ", " + count + ");"
-    sql = "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (" + itemNumber + ", " + prodDescrip + ", " + weight + ", " + length + ", " + width + ", " + height + ", " + count + ")"
-    cursor.execute(sql)
+###trying to get this query to work correctly for the add_inventory html###
+def add_item(itemNumber,prodDescrip,weight,length, width, height,invCount): #Item-Number, Description, Weight, Package-Length,  Package-Width, Package-Height, Inventory-Count
+    item_values = (itemNumber, prodDescrip, weight, length, width, height, invCount)
+    #sql_text = "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?), item_values"
+    #sql = "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (" + itemNumber + ", " + prodDescrip + ", " + weight + ", " + length + ", " + width + ", " + height + ", " + count + ")"
+    cursor.execute("INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?), item_values")
     conn.commit()
 
 # flask routes setup
@@ -27,11 +28,11 @@ app = Flask(__name__)
 
 @app.route("/", methods=['POST', 'GET'])
 def main():
-    with _sqlite3.connect('Inventory.db') as con:
+    with sqlite3.connect('Inventory.db') as con:
         cur = con.cursor()
         cur.execute('Select * FROM WEB_INVENTORY')
         data = cur.fetchall()
-        return render_template('index.html', data=data) #=enumerate(data)
+        return render_template('index.html', data=data)
 
 
 ##############################Currently Working On This Route#####################
@@ -43,9 +44,10 @@ def add_inventory():
         weight = str(request.form['weight'])
         length = str(request.form['length'])
         height = str(request.form['height'])
+        width = str(request.form['width'])
         invCount = str(request.form['invCount'])
-        add_item(itemNumber, prodDescrip, weight, length, height, invCount)
-        return render_template(('add_inventory.html', ))
+        add_item(itemNumber, prodDescrip, weight, length, height, width, invCount)
+        return render_template('add_inventory.html',)
 
     else:
         return render_template('add_inventory.html')
@@ -62,19 +64,25 @@ def update_specifications():
 def update_inventory():
     return render_template(('update_inventory.html'))
 
-query = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
+#query = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
 
-for row in query:
-    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
+#for row in query:
+#    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
 
-#add_item("10101010101", "TESTING", "20","12", "12", "12", "58008")
+conn
+item_values2 = ("10101010101", "TESTING", "20","12", "12", "12", "58008")
 
-
+###this works directly...how about when i click on the webpage?!?!
+cursor.execute("INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?)", item_values2)
+conn.commit()
+#conn.close()
 #print("------------------------NEW QUERY------------------")
 
-sql = "INSERT INTO Web_Inventory (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (0000001, 0000001, 100, 12, 12, 12, 55555)"
-cursor.execute(sql)
+sql = 'Select * FROM WEB_INVENTORY WHERE InventoryCount !=0'
+query2 = cursor.execute(sql)
 
+for row in query2:
+    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
 
 #querytest = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
 #for row in query:
