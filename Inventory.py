@@ -37,30 +37,33 @@ def main():
 @app.route("/add_inventory.html", methods=['POST', 'GET'])
 def add_inventory():
     if request.method == 'POST':
-        itemnumber = str(request.form['itemNumber'])
-        proddescrip = str(request.form['prodDescrip'])
-        weight = str(request.form['weight'])
-        length = str(request.form['length'])
-        height = str(request.form['height'])
-        width = str(request.form['width'])
-        invcount = str(request.form['invCount'])
+        itemnumber = request.form['itemNumber']
+        proddescrip = request.form['prodDescrip']
+        weight = request.form['weight']
+        length = request.form['length']
+        height = request.form['height']
+        width = request.form['width']
+        invcount = request.form['invCount']
         add_item(itemnumber, proddescrip, weight, length, height, width, invcount)
         return render_template('add_inventory.html',)
 
     else:
         return render_template('add_inventory.html')
 
+
 @app.route("/delete_inventory.html")
 def delete_inventory():
-    return render_template(('delete_inventory.html'))
+    return render_template('delete_inventory.html')
+
 
 @app.route("/update_specifications.html")
 def update_specifications():
-    return render_template(('update_specifications.html'))
+    return render_template('update_specifications.html')
+
 
 @app.route("/update_inventory.html")
 def update_inventory():
-    return render_template(('update_inventory.html'))
+    return render_template('update_inventory.html')
 
 #query = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
 
