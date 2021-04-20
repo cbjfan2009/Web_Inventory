@@ -14,12 +14,10 @@ def add_inventory_count(item_count, item_num):
     cursor.execute(update_string)
     conn.commit()
 
-###trying to get this query to work correctly for the add_inventory html###
-def add_item(itemNumber,prodDescrip,weight,length, width, height,invCount): #Item-Number, Description, Weight, Package-Length,  Package-Width, Package-Height, Inventory-Count
-    item_values = (itemNumber, prodDescrip, weight, length, width, height, invCount)
-    #sql_text = "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?), item_values"
-    #sql = "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (" + itemNumber + ", " + prodDescrip + ", " + weight + ", " + length + ", " + width + ", " + height + ", " + count + ")"
-    cursor.execute("INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?), item_values")
+###trying to get this query to work correctly for the add_inventory html; my cursor.execute() works when run by itself....###
+def add_item(itemnumber,proddescrip,weight,length, width, height,invcount): #Item-Number, Description, Weight, Package-Length,  Package-Width, Package-Height, Inventory-Count
+    item_values = (itemnumber, proddescrip, weight, length, width, height, invcount)
+    cursor.execute("INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?)", item_values)
     conn.commit()
 
 # flask routes setup
@@ -39,14 +37,14 @@ def main():
 @app.route("/add_inventory.html", methods=['POST', 'GET'])
 def add_inventory():
     if request.method == 'POST':
-        itemNumber = str(request.form['itemNumber'])
-        prodDescrip = str(request.form['prodDescrip'])
+        itemnumber = str(request.form['itemNumber'])
+        proddescrip = str(request.form['prodDescrip'])
         weight = str(request.form['weight'])
         length = str(request.form['length'])
         height = str(request.form['height'])
         width = str(request.form['width'])
-        invCount = str(request.form['invCount'])
-        add_item(itemNumber, prodDescrip, weight, length, height, width, invCount)
+        invcount = str(request.form['invCount'])
+        add_item(itemnumber, proddescrip, weight, length, height, width, invcount)
         return render_template('add_inventory.html',)
 
     else:
@@ -69,20 +67,22 @@ def update_inventory():
 #for row in query:
 #    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
 
-conn
-item_values2 = ("10101010101", "TESTING", "20","12", "12", "12", "58008")
+
+#item_values2 = ("10101010101", "TESTING", "20","12", "12", "12", "58008")
 
 ###this works directly...how about when i click on the webpage?!?!
-cursor.execute("INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?)", item_values2)
-conn.commit()
-#conn.close()
+#cursor.execute("INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?)", item_values2)
+#conn.commit()
+
+
+
 #print("------------------------NEW QUERY------------------")
 
-sql = 'Select * FROM WEB_INVENTORY WHERE InventoryCount !=0'
-query2 = cursor.execute(sql)
+#sql = 'Select * FROM WEB_INVENTORY WHERE InventoryCount !=0'
+#query2 = cursor.execute(sql)
 
-for row in query2:
-    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
+#for row in query2:
+#    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
 
 #querytest = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
 #for row in query:
