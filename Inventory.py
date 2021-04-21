@@ -1,24 +1,27 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, redirect
 import sqlite3
 
-#connection to DB
-conn = sqlite3.connect('Inventory.db')
-
-#setup cursor object
-cursor = conn.cursor()
 
 def add_inventory_count(item_count, item_num):
-    update_string = str(
-    "Update WEB_INVENTORY SET InventoryCount =" + str(item_count)+
-    " WHERE ITEMNUM = " + str(item_num))
-    cursor.execute(update_string)
-    conn.commit()
+    with sqlite3.connect('Inventory.db') as con:
+        cur = con.cursor()
+        update_string = "Update WEB_INVENTORY SET InventoryCount =" + str(item_count) +\
+                        " WHERE ITEMNUM = " + str(item_num)
+        cur.execute(update_string)
+        con.commit()
+
 
 ###trying to get this query to work correctly for the add_inventory html; my cursor.execute() works when run by itself....###
-def add_item(itemnumber,proddescrip,weight,length, width, height,invcount): #Item-Number, Description, Weight, Package-Length,  Package-Width, Package-Height, Inventory-Count
-    item_values = (itemnumber, proddescrip, weight, length, width, height, invcount)
-    cursor.execute("INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?)", item_values)
-    conn.commit()
+# Item-Number, Description, Weight, Package-Length,  Package-Width, Package-Height, Inventory-Count
+def add_item(itemnumber, proddescrip, weight, length, width, height, invcount):
+    with sqlite3.connect('Inventory.db') as con:
+        cur = con.cursor()
+        item_values = (itemnumber, proddescrip, weight, length, width, height, invcount)
+        cur.execute(
+            "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?)",
+            item_values)
+        con.commit()
+
 
 # flask routes setup
 app = Flask(__name__)
@@ -34,19 +37,18 @@ def main():
 
 
 ##############################Currently Working On This Route#####################
-@app.route("/add_inventory.html", methods=['POST', 'GET'])
+@app.route("/add_inventory", methods=['POST', 'GET'])
 def add_inventory():
     if request.method == 'POST':
-        itemnumber = request.form['itemNumber']
-        proddescrip = request.form['prodDescrip']
+        item_number = request.form['itemNumber']
+        product_description = request.form['prodDescrip']
         weight = request.form['weight']
         length = request.form['length']
         height = request.form['height']
         width = request.form['width']
-        invcount = request.form['invCount']
-        add_item(itemnumber, proddescrip, weight, length, height, width, invcount)
-        return render_template('add_inventory.html',)
-
+        inv_count = request.form['invCount']
+        add_item(item_number, product_description, weight, length, height, width, inv_count)
+        return redirect('/')
     else:
         return render_template('add_inventory.html')
 
