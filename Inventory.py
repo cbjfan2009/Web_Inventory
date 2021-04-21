@@ -11,15 +11,23 @@ def add_inventory_count(item_count, item_num):
         con.commit()
 
 
-###trying to get this query to work correctly for the add_inventory html; my cursor.execute() works when run by itself....###
-# Item-Number, Description, Weight, Package-Length,  Package-Width, Package-Height, Inventory-Count
 def add_item(itemnumber, proddescrip, weight, length, width, height, invcount):
     with sqlite3.connect('Inventory.db') as con:
         cur = con.cursor()
         item_values = (itemnumber, proddescrip, weight, length, width, height, invcount)
         cur.execute(
-            "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?)",
+            "INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) "
+            "VALUES (?,?,?,?,?,?,?)",
             item_values)
+        con.commit()
+
+
+def delete_item(user_selected):
+    with sqlite3.connect('Inventory.db') as con:
+        cur = con.cursor()
+        selected = user_selected
+        cur.execute(
+            "DELETE FROM WEB_INVENTORY WHERE ItemNum = (?)", selected)
         con.commit()
 
 
@@ -31,12 +39,11 @@ app = Flask(__name__)
 def main():
     with sqlite3.connect('Inventory.db') as con:
         cur = con.cursor()
-        cur.execute('Select * FROM WEB_INVENTORY')
+        cur.execute('Select * FROM WEB_INVENTORY ORDER BY ItemNum')
         data = cur.fetchall()
         return render_template('index.html', data=data)
 
 
-##############################Currently Working On This Route#####################
 @app.route("/add_inventory", methods=['POST', 'GET'])
 def add_inventory():
     if request.method == 'POST':
@@ -55,7 +62,12 @@ def add_inventory():
 
 @app.route("/delete_inventory.html")
 def delete_inventory():
-    return render_template('delete_inventory.html')
+    with sqlite3.connect('Inventory.db') as con:
+        cur = con.cursor()
+        cur.execute('Select * FROM WEB_INVENTORY ORDER BY ItemNum')
+        data = cur.fetchall()
+        return render_template('delete_inventory.html', data=data)
+
 
 
 @app.route("/update_specifications.html")
@@ -67,47 +79,8 @@ def update_specifications():
 def update_inventory():
     return render_template('update_inventory.html')
 
-#query = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
-
-#for row in query:
-#    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
-
-
-#item_values2 = ("10101010101", "TESTING", "20","12", "12", "12", "58008")
-
-###this works directly...how about when i click on the webpage?!?!
-#cursor.execute("INSERT INTO WEB_INVENTORY (ItemNum, Description, Weight, PkgL, PkgW, PkgH, InventoryCount) VALUES (?,?,?,?,?,?,?)", item_values2)
-#conn.commit()
-
-
-
-#print("------------------------NEW QUERY------------------")
-
-#sql = 'Select * FROM WEB_INVENTORY WHERE InventoryCount !=0'
-#query2 = cursor.execute(sql)
-
-#for row in query2:
-#    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
-
-#querytest = cursor.execute('Select * FROM WEB_INVENTORY WHERE InventoryCount !=0')
-#for row in query:
-#    print("Item ID: ", row[0], " ", "Item Name: ", row[1], " ", "Item Inventory Count: ", row[6])
-
-#a = (querytest.fetchall())
-#for i in a: #gets individual 'cells'
-#    for sub in i:
-#        print(sub)
-#print(a) #prints the list of tuples
-
-
-#for index, tuple in enumerate(a): #gets individual 'cells'
-#    for i in tuple:
-#        print(i)
-    #element_one = tuple[0]
-    #element_two = tuple[1]
-    #element_three = tuple[2]
-    #element_four = tuple[3]
-    #element_five = tuple[4]
-    #element_six = tuple[5]
-    #element_seven = tuple[6]
-    #print(element_one, element_two, element_three, element_four, element_five, element_six, element_seven)
+#conn = sqlite3.connect("Inventory.db")
+#cur = conn.cursor()
+#cur.execute('Select * FROM WEB_INVENTORY ORDER BY ItemNum')
+#data = cur.fetchall()
+#print(data)

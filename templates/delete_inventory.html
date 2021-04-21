@@ -11,6 +11,13 @@
 
 <h1> Please select the item you wish to delete from the drop down box below. </h1>
 
+
+        <select name="inventory_select" id="inventory_select">
+            {% for item in data %}
+            <option value={{item}}>{{ item }}</option>
+            {% endfor %}
+        </select>
+
 </body>
 
 {% endblock %}
