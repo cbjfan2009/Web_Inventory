@@ -55,29 +55,37 @@ def add_inventory():
         width = request.form['width']
         inv_count = request.form['invCount']
         add_item(item_number, product_description, weight, length, height, width, inv_count)
-        return redirect('/')
+        return redirect('add_inventory.html')
     else:
         return render_template('add_inventory.html')
 
 
-@app.route("/delete_inventory.html")
+@app.route("/delete_inventory", methods=['POST', 'GET'])
 def delete_inventory():
     with sqlite3.connect('Inventory.db') as con:
         cur = con.cursor()
         cur.execute('Select * FROM WEB_INVENTORY ORDER BY ItemNum')
         data = cur.fetchall()
+    if request.method == 'POST':###
+        selected_item = request.form['inventory_select']###
+        selected_item_item_num = selected_item[0]
+        delete_item(selected_item_item_num)###
+        return redirect('/')###
+    else:
         return render_template('delete_inventory.html', data=data)
 
 
-
-@app.route("/update_specifications.html")
+@app.route("/update_specifications")
 def update_specifications():
     return render_template('update_specifications.html')
 
 
-@app.route("/update_inventory.html")
+@app.route("/update_inventory")
 def update_inventory():
     return render_template('update_inventory.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 #conn = sqlite3.connect("Inventory.db")
 #cur = conn.cursor()

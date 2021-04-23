@@ -8,7 +8,18 @@
 
 {% block body %}
 <body>
-
+    <div class="container">
+        <h1 class="logo">First Web App</h1>
+        <strong><nav>
+          <ul class="menu">
+            <li  style="display:inline;"><a href="{{ url_for('main') }}">Home</a></li>
+            <li  style="display:inline;"><a href="{{ url_for('add_inventory') }}">Add Item</a></li>
+            <li  style="display:inline;"><a href="{{ url_for('delete_inventory') }}">Delete Item</a></li>
+            <li  style="display:inline;"><a href="{{ url_for('update_inventory') }}">Change Inventory Counts</a></li>
+            <li  style="display:inline;"><a href="{{ url_for('update_specifications') }}">Change Specifications</a></li>
+          </ul>
+        </nav></strong>
+      </div>
 <h1> This page is going to have update_inventory feature </h1>
 
 </body>

@@ -8,16 +8,28 @@
 
 {% block body %}
 <body>
-
+    <div class="container">
+        <h1 class="logo">First Web App</h1>
+        <strong><nav>
+          <ul class="menu">
+            <li  style="display:inline;"><a href="{{ url_for('main') }}">Home</a></li>
+            <li  style="display:inline;"><a href="{{ url_for('add_inventory') }}">Add Item</a></li>
+            <li  style="display:inline;"><a href="{{ url_for('delete_inventory') }}">Delete Item</a></li>
+            <li  style="display:inline;"><a href="{{ url_for('update_inventory') }}">Change Inventory Counts</a></li>
+            <li  style="display:inline;"><a href="{{ url_for('update_specifications') }}">Change Specifications</a></li>
+          </ul>
+        </nav></strong>
+      </div>
 <h1> Please select the item you wish to delete from the drop down box below. </h1>
 
-
-        <select name="inventory_select" id="inventory_select">
-            {% for item in data %}
-            <option value={{item}}>{{ item }}</option>
-            {% endfor %}
-        </select>
-
+        <form action="delete_inventory" method="POST">
+            <select name="inventory_select" id="inventory_select">
+                {% for item in data %}
+                <option value={{item}}>{{ item }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" name="delete_inventory" id="delete_inventory" value="Delete Inventory Item">
+    </form>
 </body>
 
 {% endblock %}
