@@ -68,7 +68,10 @@ def delete_inventory():
         data = cur.fetchall()
     if request.method == 'POST':###
         selected_item = request.form['inventory_select']###
+        print("Here is request.form[inventory_select] " + request.form['inventory_select'])
+        print("Here is selected_item " + selected_item)
         selected_item_item_num = selected_item[0]
+        print("Here is the selected_item[0] " + selected_item_item_num)
         delete_item(selected_item_item_num)###
         return redirect('/')###
     else:
