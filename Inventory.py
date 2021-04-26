@@ -27,7 +27,7 @@ def delete_item(user_selected):
         cur = con.cursor()
         selected = user_selected
         cur.execute(
-            "DELETE FROM WEB_INVENTORY WHERE ItemNum = (?)", selected)
+            "DELETE FROM WEB_INVENTORY WHERE ItemNum = ?", selected)
         con.commit()
 
 
@@ -66,13 +66,14 @@ def delete_inventory():
         cur = con.cursor()
         cur.execute('Select * FROM WEB_INVENTORY ORDER BY ItemNum')
         data = cur.fetchall()
+
     if request.method == 'POST':###
-        selected_item = request.form['inventory_select']###
-        print("Here is request.form[inventory_select] " + request.form['inventory_select'])
-        print("Here is selected_item " + selected_item)
-        selected_item_item_num = selected_item[0]
-        print("Here is the selected_item[0] " + selected_item_item_num)
-        delete_item(selected_item_item_num)###
+        selected_item = request.form.get('inventory_select')  # if this returns a string ...
+        print(selected_item)  # like, ('07111111', -- then where is the rest of the string that shows up in data = cur.fetchall()?
+        print(type(selected_item))  #should be ('07111111', 'another testing', '25', '25', '25', '25', '25'), right?
+        sliced_string = selected_item[2:-3]
+        print(sliced_string) # this would give me a string of '0711111'...but if i feed that into delete_item() I get errors
+        #delete_item(int(selected_item_item_num))###
         return redirect('/')###
     else:
         return render_template('delete_inventory.html', data=data)
