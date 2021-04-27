@@ -25,7 +25,8 @@ def add_item(itemnumber, proddescrip, weight, length, width, height, invcount):
 def delete_item(user_selected):
     with sqlite3.connect('Inventory.db') as con:
         cur = con.cursor()
-        selected = user_selected
+        # takes the first element of user_selected and puts it into a tuple
+        selected = (user_selected[0],)
         cur.execute(
             "DELETE FROM WEB_INVENTORY WHERE ItemNum = ?", selected)
         con.commit()
@@ -67,14 +68,13 @@ def delete_inventory():
         cur.execute('Select * FROM WEB_INVENTORY ORDER BY ItemNum')
         data = cur.fetchall()
 
-    if request.method == 'POST':###
-        selected_item = request.form.get('inventory_select')  # if this returns a string ...
-        print(selected_item)  # like, ('07111111', -- then where is the rest of the string that shows up in data = cur.fetchall()?
-        print(type(selected_item))  #should be ('07111111', 'another testing', '25', '25', '25', '25', '25'), right?
-        sliced_string = selected_item[2:-3]
-        print(sliced_string) # this would give me a string of '0711111'...but if i feed that into delete_item() I get errors
-        #delete_item(int(selected_item_item_num))###
-        return redirect('/')###
+    if request.method == 'POST':
+        selected_item = request.form.get('inventory_select')
+        # the input is a string with a tuple inside.
+        # "eval" executes the code in the string and returns a tuple
+        selected_item_tuple = eval(selected_item)
+        delete_item(selected_item_tuple)
+        return redirect('/')
     else:
         return render_template('delete_inventory.html', data=data)
 

@@ -24,7 +24,7 @@
         <form action="delete_inventory" method="POST">
             <select name="inventory_select" id="inventory_select">
                 {% for item in data %}
-                <option value={{item}}>{{ item }}</option>
+                <option value="{{item}}">{{ item }}</option>
                 {% endfor %}
             </select>
             <input type="submit" name="delete_inventory" id="delete_inventory" value="Delete Inventory Item">
