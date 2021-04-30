@@ -3,7 +3,14 @@
 {% block head %}
 
 <title>Update Inventory Counts</title>
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script type=text/javascript>
+			$$(document).ready(function(){
+             $("button").click(function(){
+              $("#div1").load("demo_test.txt");
+                  });
+                });
+		</script>
 {% endblock %}
 
 {% block body %}
@@ -19,8 +26,29 @@
           </ul>
         </nav></strong>
       </div>
-<h1> This page is going to have update_inventory feature </h1>
+    <h1> Change Item Specifications Using the Selector Below: </h1>
 
-</body>
+
+    <div class='container'>
+		<h3>Choose an item from this list to modify:</h3>
+
+        <form action="modify_inventory" method="POST">
+        <select name="inventory_select" id="inventory_select">
+                    {% for item in data %}
+                    <option value="{{item}}">{{ item }}</option>
+                    {% endfor %}
+        </select>
+            <!---<a href=# id=process_input>---><button class='btn btn-default'>Submit</button><!--</a>-->
+        </form>
+        <p id=result></p>
+    </div>
+
+
+
+
+
+
+
+
 
 {% endblock %}

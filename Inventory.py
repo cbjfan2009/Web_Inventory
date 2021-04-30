@@ -56,7 +56,7 @@ def add_inventory():
         width = request.form['width']
         inv_count = request.form['invCount']
         add_item(item_number, product_description, weight, length, height, width, inv_count)
-        return redirect('add_inventory.html')
+        return redirect('/')
     else:
         return render_template('add_inventory.html')
 
@@ -81,12 +81,20 @@ def delete_inventory():
 
 @app.route("/update_specifications")
 def update_specifications():
-    return render_template('update_specifications.html')
+    with sqlite3.connect('Inventory.db') as con:
+        cur = con.cursor()
+        cur.execute('Select * FROM WEB_INVENTORY ORDER BY ItemNum')
+        data = cur.fetchall()
+    return render_template('update_specifications.html', data=data)
 
 
 @app.route("/update_inventory")
 def update_inventory():
-    return render_template('update_inventory.html')
+    with sqlite3.connect('Inventory.db') as con:
+        cur = con.cursor()
+        cur.execute('Select * FROM WEB_INVENTORY ORDER BY ItemNum')
+        data = cur.fetchall()
+    return render_template('update_inventory.html', data=data)
 
 if __name__ == '__main__':
     app.run(debug=True)
